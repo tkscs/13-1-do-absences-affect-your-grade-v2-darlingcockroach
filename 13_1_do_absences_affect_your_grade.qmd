@@ -1,0 +1,146 @@
+---
+title: "13_1_do_absences_affect_your_grade"
+format: html
+---
+
+Before anything else, load the libraries by running the code block below.
+
+```{r}
+library(tidyverse)
+```
+
+And read the data by running the code block below.
+
+```{r}
+population = read_csv("do_absences_affect_your_grade.csv")
+population
+```
+
+# Step 1: Visualize the population
+
+Then plot the data by running the code block below.
+
+```{r}
+# Start with your data
+population |> 
+  # Make a blank canvas for your plot
+  ggplot() +
+  # Decide on your x and y axes
+  aes(x = days_absent, y = final_grade) +
+  # Add a regression line with the "linear model" method and no error bars
+  geom_smooth(method = "lm", se = FALSE) +
+  # Make a scatterplot
+  geom_point()
+```
+
+## Exercise 1: Describe the relationship
+
+Remember to comment on each of these
+* Direction ("positive" or "negative"
+* Unusual features (e.g. gaps in the x- or y- axis, or points far from the line)
+* Form (Does it look linear or nonliner?)
+* Strength ("strong"? "weak"? "no relationship"?)
+
+# Step 2: Run a Linear Regression for the population
+
+Run the code block below to run a linear regression (AKA find the line of best fit). The results of the linear regression are in the "Coefficients" section of the output. The "(Intercept)" coefficient is the y-intercept. The "days_absent" coefficient is the slope.
+
+```{r}
+m = lm(final_grade ~ days_absent, data = population)
+m
+```
+
+## Exercise 2:
+
+What is the equation of the linear regression line? Remember to define your variables in context.
+
+## Exercise 3:
+
+What is the y-intercept? Is this a statistic or a parameter? Explain.
+
+## Exercise 4:
+
+What is the slope? Is this a statistic or a parameter? Explain.
+
+## Exercise 5:
+
+Interpret the slope (remember your units!).
+
+# Step 3: Randomly sample 10 students
+
+Sample 10 students at random from the full dataset by running the code block below.
+
+```{r}
+sample_of_10 = population |> 
+  sample_n(10)
+sample_of_10
+```
+
+# Step 4: Visualize your sample
+
+Copy the code from "Step 1: Visualize the population" into the code block below.
+Replace the population dataset `population` with your randomly sampled `sample_of_10`.
+
+```{r}
+
+```
+
+# Step 5: Run a Linear Regression for your sample.
+
+```{r}
+
+```
+
+## Exercise 6: Draw the scatterplot for your sample
+
+## Exercise 7: What is the equation of the regression line?
+
+## Exercise 8: What is the y-intercept? Is this a statistic or parameter? Explain.
+
+## Exercise 9: What is the slope? Is this a statistic or parameter? Explain.
+
+# Step 6: Collect 30 different sample slopes
+
+```{r}
+sample_10_students = function(i) {
+  # Copy your code from "Step 3: Randomly sample 10 students" here
+  
+  # Copy your code from "Step 5: Run a linear regression for your sample" here
+  
+  # Do not change this code:
+  m$coefficients["days_absent"]
+}
+sample_slopes = map_dbl(1:30, sample_10_students)
+ggplot(NULL, aes(x = sample_slopes)) +
+  geom_dotplot() +
+  lims(x = c(-4, 4))
+```
+
+# Step 7: Inspect the full linear regression output for a sample
+
+Randomly sample 10 students again:
+
+```{r}
+# Copy your code from "Step 3: Randomly sample 10 students" here
+
+
+```
+
+Run the linear regression for that sample:
+
+```{r}
+# Copy your code from "Step 5: Run a linear regression for your sample" here
+
+
+```
+
+So far, we've just gotten a single estimate for the y-intercept and a single estimate for the slope.
+But we can do inference about the population from the sample, using the full regression output.
+Run the code below to see the full regression output:
+
+```{r}
+m |> summary()
+```
+
+
+
